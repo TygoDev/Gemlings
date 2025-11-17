@@ -104,4 +104,26 @@ public class PlayerStats : MonoBehaviour
             Inventory.Instance.AddGemInternal(gemCopy); // silent add
         }
     }
+
+    [ContextMenu("Delete Save File")]
+    public void DeleteSaveFile()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "playerSave.json");
+
+        playerStatsSO.activeDamagePerSecond = 20;
+        playerStatsSO.autoDamagePerSecond = 20;
+        playerStatsSO.money = 0;
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Save file deleted! Path: " + path);
+        }
+        else
+        {
+            Debug.Log("No save file to delete. Path checked: " + path);
+        }
+    }
+
 }
+
