@@ -130,9 +130,6 @@ public class GameManager : MonoBehaviour
         // Weighted random pick by rarity
         GemSO chosen = GetWeightedRandomGem();
 
-        // Weighted random pick for adjective
-        chosen.adjective = GetAdjective();
-
         // Create a *runtime instance* so we can modify stats without affecting the original asset
         GemSO instance = ScriptableObject.Instantiate(chosen);
 
@@ -140,8 +137,10 @@ public class GameManager : MonoBehaviour
         float weightMultiplier = UnityEngine.Random.Range(0.5f, 2f);
         instance.weight *= weightMultiplier;
 
+        instance.adjective = GetAdjective();
+
         // Calculate true value: base value * weight
-        instance.trueValue = Mathf.RoundToInt(instance.baseValue * instance.weight);
+        instance.trueValue = Mathf.RoundToInt((instance.baseValue * instance.weight) / 100 * (float)instance.adjective);
 
         // Optional: adjust durability slightly for variation
         instance.durability = Mathf.RoundToInt(instance.durability * UnityEngine.Random.Range(0.9f, 1.1f));
