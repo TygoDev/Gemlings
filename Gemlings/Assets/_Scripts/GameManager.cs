@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
     // --------------------------
     private IEnumerator RandomMinigameRoutine()
     {
-        float waitTime = Random.Range(minTriggerTime, maxTriggerTime);
+        float waitTime = UnityEngine.Random.Range(minTriggerTime, maxTriggerTime);
         yield return new WaitForSeconds(waitTime);
 
         if (currentState == State.WaitingForMinigame)
@@ -129,18 +130,21 @@ public class GameManager : MonoBehaviour
         // Weighted random pick by rarity
         GemSO chosen = GetWeightedRandomGem();
 
+        // Weighted random pick for adjective
+        chosen.adjective = GetAdjective();
+
         // Create a *runtime instance* so we can modify stats without affecting the original asset
         GemSO instance = ScriptableObject.Instantiate(chosen);
 
         // Randomize weight (for example, 50%–200% of original)
-        float weightMultiplier = Random.Range(0.5f, 2f);
+        float weightMultiplier = UnityEngine.Random.Range(0.5f, 2f);
         instance.weight *= weightMultiplier;
 
         // Calculate true value: base value * weight
         instance.trueValue = Mathf.RoundToInt(instance.baseValue * instance.weight);
 
         // Optional: adjust durability slightly for variation
-        instance.durability = Mathf.RoundToInt(instance.durability * Random.Range(0.9f, 1.1f));
+        instance.durability = Mathf.RoundToInt(instance.durability * UnityEngine.Random.Range(0.9f, 1.1f));
 
         return instance;
     }
@@ -153,7 +157,7 @@ public class GameManager : MonoBehaviour
             totalWeight += Mathf.Max((float)gem.rarityLevel, 0.001f); // avoid 0 weights
         }
 
-        float randomValue = Random.Range(0, totalWeight);
+        float randomValue = UnityEngine.Random.Range(0, totalWeight);
         float cumulative = 0f;
 
         foreach (var gem in gemPool)
@@ -164,8 +168,30 @@ public class GameManager : MonoBehaviour
         }
 
         // Fallback (should not happen)
-        return gemPool[Random.Range(0, gemPool.Count)];
+        return gemPool[UnityEngine.Random.Range(0, gemPool.Count)];
     }
+
+    public Adjective GetAdjective()
+    {
+        var values = Enum.GetValues(typeof(Adjective)).Cast<Adjective>().ToArray();
+
+        float exponent = 3f; // increase this to make high values rarer
+        float totalWeight = values.Sum(v => 1f / Mathf.Pow((float)v, exponent));
+        float randomPoint = UnityEngine.Random.value * totalWeight;
+
+        float current = 0f;
+        foreach (var val in values)
+        {
+            current += 1f / Mathf.Pow((float)val, exponent);
+            if (randomPoint <= current)
+            {
+                return val;
+            }
+        }
+
+        return values[values.Length - 1]; // fallback
+    }
+
 
     public GemSO GetGemByID(int id)
     {

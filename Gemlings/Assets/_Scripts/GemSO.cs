@@ -19,14 +19,14 @@ public class GemSO : ScriptableObject
 
 public enum Adjective
 {
-    None,
-    Dull,
-    Shiny,   
-    Radiant,
-    Brilliant,
-    Pristine,
-    Flawless,
-    Lustrous
+    Dull = 50,
+    None = 100,
+    Shiny = 150,   
+    Radiant = 160,
+    Brilliant = 170,
+    Pristine = 180,
+    Flawless = 190,
+    Lustrous = 250
 }
 
 public enum Rarity

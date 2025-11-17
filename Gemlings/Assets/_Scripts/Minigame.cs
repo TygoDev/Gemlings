@@ -10,7 +10,7 @@ public class Minigame : MonoBehaviour
     [SerializeField] private float greenDamage = 20f;
     [SerializeField] private float yellowDamage = 5f;
     [SerializeField] private float redDamage = 10f;
-    [SerializeField] private float activeDamagePerSecond;
+    [SerializeField] private float activeDamage;
     [SerializeField] private float autoDamagePerSecond;
     [SerializeField] private float timerDuration = 10f;
 
@@ -41,7 +41,7 @@ public class Minigame : MonoBehaviour
         // CHANGE THIS: EVENT SYSTEM WHEN THE SHOP IS DONE TO UPDATE STATS
         PlayerStatsSO stats = PlayerStats.Instance.GetPlayerStats();
 
-        activeDamagePerSecond = stats.activeDamagePerSecond;
+        activeDamage = stats.activeDamage;
         autoDamagePerSecond = stats.autoDamagePerSecond;
     }
 
@@ -70,9 +70,9 @@ public class Minigame : MonoBehaviour
 
     private void UpdateDamageValues()
     {
-        redDamage = activeDamagePerSecond / 2;
-        yellowDamage = activeDamagePerSecond / 4;
-        greenDamage = activeDamagePerSecond;
+        redDamage = activeDamage / 2;
+        yellowDamage = activeDamage / 4;
+        greenDamage = activeDamage;
     }
 
     // --------------------------

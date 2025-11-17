@@ -3296,7 +3296,6 @@ MonoBehaviour:
   moneyText: {fileID: 576700927}
   itemContainerPrefab: {fileID: 673438096892590385, guid: 195c414647a4508478d2262581544bd7, type: 3}
   itemsParent: {fileID: 595233755}
-  itemDatabase: []
   inventory: []
 --- !u!1 &2053328619
 GameObject:

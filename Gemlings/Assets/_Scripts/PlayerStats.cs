@@ -43,7 +43,7 @@ public class PlayerStats : MonoBehaviour
     public void SaveGame()
     {
         PlayerSaveData data = new PlayerSaveData();
-        data.activeDamagePerSecond = playerStatsSO.activeDamagePerSecond;
+        data.activeDamage = playerStatsSO.activeDamage;
         data.autoDamagePerSecond = playerStatsSO.autoDamagePerSecond;
         data.money = playerStatsSO.money;
 
@@ -76,7 +76,7 @@ public class PlayerStats : MonoBehaviour
         PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
 
         // Load money
-        playerStatsSO.activeDamagePerSecond = data.activeDamagePerSecond;
+        playerStatsSO.activeDamage = data.activeDamage;
         playerStatsSO.autoDamagePerSecond = data.autoDamagePerSecond;
         playerStatsSO.money = data.money;
 
@@ -110,8 +110,8 @@ public class PlayerStats : MonoBehaviour
     {
         string path = Path.Combine(Application.persistentDataPath, "playerSave.json");
 
-        playerStatsSO.activeDamagePerSecond = 20;
-        playerStatsSO.autoDamagePerSecond = 20;
+        playerStatsSO.activeDamage = 20;
+        playerStatsSO.autoDamagePerSecond = 10;
         playerStatsSO.money = 0;
 
         if (File.Exists(path))

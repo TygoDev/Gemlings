@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e25b063002fe9734ab98d9db2e4d3ec2, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsSO
-  activeDamagePerSecond: 20
-  autoDamagePerSecond: 20
+  activeDamage: 20
+  autoDamagePerSecond: 10
   money: 0

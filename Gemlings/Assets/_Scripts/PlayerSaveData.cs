@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class PlayerSaveData
 {
-    public float activeDamagePerSecond;
+    public float activeDamage;
     public float autoDamagePerSecond;
     public int money;
 

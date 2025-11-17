@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerStatsSO : ScriptableObject
 {
     [Header("Stats")]
-    public float activeDamagePerSecond;
+    public float activeDamage;
     public float autoDamagePerSecond;
     public int money;
 }
