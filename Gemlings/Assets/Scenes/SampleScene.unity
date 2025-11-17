@@ -609,7 +609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &459166743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -622,6 +622,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 716495041}
   - {fileID: 783672894}
   m_Father: {fileID: 2038113290}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1263,7 +1264,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00012207031}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -912.2823}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &595233756
 MonoBehaviour:
@@ -1777,13 +1778,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 716495040}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 786461569}
-  m_Father: {fileID: 2038113290}
+  m_Father: {fileID: 459166743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2148,19 +2149,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5612522535074276314, guid: b9c6af15006848b46ba755f91246425c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 306.1536
+      value: 630.9193
       objectReference: {fileID: 0}
     - target: {fileID: 5612522535074276314, guid: b9c6af15006848b46ba755f91246425c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 800.6351
+      value: 1089.1031
       objectReference: {fileID: 0}
     - target: {fileID: 5612522535074276314, guid: b9c6af15006848b46ba755f91246425c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.8026962
+      value: 7.155802
       objectReference: {fileID: 0}
     - target: {fileID: 5612522535074276314, guid: b9c6af15006848b46ba755f91246425c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -105.4934
+      value: -109.577515
       objectReference: {fileID: 0}
     - target: {fileID: 6318059179687895298, guid: b9c6af15006848b46ba755f91246425c, type: 3}
       propertyPath: m_Pivot.x
@@ -2869,8 +2870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b059a0aabeff9d340bb8fed3c3986544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleInventory
-  inventory: {fileID: 459166742}
-  sellAllButton: {fileID: 716495040}
+  menu: {fileID: 459166742}
 --- !u!1 &1678495174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3235,7 +3235,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 459166743}
-  - {fileID: 716495041}
   m_Father: {fileID: 417465768}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
