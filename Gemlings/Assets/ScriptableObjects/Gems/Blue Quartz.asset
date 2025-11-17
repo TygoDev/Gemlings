@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7c0d928922cac4492e7758fba673db, type: 3}
+  m_Name: Blue Quartz
+  m_EditorClassIdentifier: Assembly-CSharp::GemSO
+  id: 2
+  itemName: Blue Quartz
+  icon: {fileID: 5888821824450664893, guid: 89989df84254fdc43947b4d59e17eb22, type: 3}
+  rarityLevel: 50
+  adjective: 0
+  baseValue: 10
+  trueValue: 10
+  weight: 5.1
+  durability: 98
