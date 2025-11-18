@@ -17,6 +17,17 @@ public class Inventory : MonoBehaviour
 
     private PlayerStats playerStats => PlayerStats.Instance;
 
+    private void OnEnable()
+    {
+        PlayerStats.Instance.OnMoneyChanged += UpdateMoneyUI;
+    }
+
+    private void OnDisable()
+    {
+        if (PlayerStats.Instance != null)
+            PlayerStats.Instance.OnMoneyChanged -= UpdateMoneyUI;
+    }
+
     private void Awake()
     {
         // Singleton setup

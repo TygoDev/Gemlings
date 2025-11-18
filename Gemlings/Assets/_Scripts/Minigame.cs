@@ -10,8 +10,6 @@ public class Minigame : MonoBehaviour
     [SerializeField] private float greenDamage = 20f;
     [SerializeField] private float yellowDamage = 5f;
     [SerializeField] private float redDamage = 10f;
-    [SerializeField] private float activeDamage;
-    [SerializeField] private float autoDamagePerSecond;
     [SerializeField] private float timerDuration = 10f;
 
     [Header("References")]
@@ -23,6 +21,7 @@ public class Minigame : MonoBehaviour
     [SerializeField] private RectTransform greenZone;
     [SerializeField] private RectTransform yellowZone;
     [SerializeField] private RectTransform redZone;
+    private PlayerStatsSO playerStats => PlayerStats.Instance.GetPlayerStats();
 
     private Slider bounceSlider;
     private RectTransform handle;
@@ -37,12 +36,6 @@ public class Minigame : MonoBehaviour
     {
         bounceSlider = GetComponent<Slider>();
         handle = bounceSlider.handleRect;
-
-        // CHANGE THIS: EVENT SYSTEM WHEN THE SHOP IS DONE TO UPDATE STATS
-        PlayerStatsSO stats = PlayerStats.Instance.GetPlayerStats();
-
-        activeDamage = stats.activeDamage;
-        autoDamagePerSecond = stats.autoDamagePerSecond;
     }
 
     private void OnEnable()
@@ -70,9 +63,9 @@ public class Minigame : MonoBehaviour
 
     private void UpdateDamageValues()
     {
-        redDamage = activeDamage / 2;
-        yellowDamage = activeDamage / 4;
-        greenDamage = activeDamage;
+        redDamage = playerStats.activeDamage / 2;
+        yellowDamage = playerStats.activeDamage / 4;
+        greenDamage = playerStats.activeDamage;
     }
 
     // --------------------------
@@ -133,7 +126,7 @@ public class Minigame : MonoBehaviour
         if (autoDamageTimer >= 1f)
         {
             autoDamageTimer = 0f;
-            nodeHealth -= autoDamagePerSecond; // Apply automatic damage each second
+            nodeHealth -= playerStats.autoDamagePerSecond; // Apply automatic damage each second
             healthSlider.value = nodeHealth;
             UpdateHealthText();
 

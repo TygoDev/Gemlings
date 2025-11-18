@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,8 +7,13 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats Instance { get; private set; }
+    public event Action OnMoneyChanged;
 
     [SerializeField] private PlayerStatsSO playerStatsSO;
+
+    [Header("Shop levels")]
+    public int activeDamageLevel = 1;
+    public int autoDamageLevel = 1;
 
     private string savePath;
 
@@ -31,6 +37,21 @@ public class PlayerStats : MonoBehaviour
     public void UpdateMoney(int amount)
     {
         playerStatsSO.money += amount;
+        OnMoneyChanged?.Invoke();
+        SaveGame();
+    }
+
+    public void UpdateActiveDamage(int amount, int level)
+    {
+        activeDamageLevel = level;
+        playerStatsSO.activeDamage = amount;
+        SaveGame();
+    }
+
+    public void UpdateAutoDamage(int amount, int level)
+    {
+        autoDamageLevel = level;
+        playerStatsSO.autoDamagePerSecond = amount;
         SaveGame();
     }
 
@@ -46,6 +67,9 @@ public class PlayerStats : MonoBehaviour
         data.activeDamage = playerStatsSO.activeDamage;
         data.autoDamagePerSecond = playerStatsSO.autoDamagePerSecond;
         data.money = playerStatsSO.money;
+
+        data.activeDamageLevel = activeDamageLevel;
+        data.autoDamageLevel = autoDamageLevel;
 
         // Save inventory gems
         List<GemSO> inv = Inventory.Instance.GetAllGems().ToList();
@@ -80,6 +104,9 @@ public class PlayerStats : MonoBehaviour
         playerStatsSO.autoDamagePerSecond = data.autoDamagePerSecond;
         playerStatsSO.money = data.money;
 
+        activeDamageLevel = data.activeDamageLevel;
+        autoDamageLevel = data.autoDamageLevel;
+
         // Rebuild inventory
         Inventory.Instance.ClearInventoryInternal();
 
@@ -113,6 +140,7 @@ public class PlayerStats : MonoBehaviour
         playerStatsSO.activeDamage = 20;
         playerStatsSO.autoDamagePerSecond = 10;
         playerStatsSO.money = 0;
+
 
         if (File.Exists(path))
         {

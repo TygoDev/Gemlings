@@ -8,6 +8,9 @@ public class PlayerSaveData
     public float autoDamagePerSecond;
     public int money;
 
+    public int activeDamageLevel;
+    public int autoDamageLevel;
+
     public List<GemSaveData> inventoryGems = new();
 }
 
@@ -20,3 +23,4 @@ public class GemSaveData
     public float weight;
     public float durability;
 }
+
