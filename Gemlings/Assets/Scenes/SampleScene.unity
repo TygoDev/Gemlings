@@ -2444,8 +2444,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a2ff1a7de30b3f4ab2f0943c6c1a54a, type: 2}
   - {fileID: 11400000, guid: 8ccae38afabdd1a44b0ab7dad53390b9, type: 2}
   - {fileID: 11400000, guid: 14af28653cf67e842b4721d9953e4fa0, type: 2}
-  minTriggerTime: 5
-  maxTriggerTime: 15
+  minTriggerTime: 1
+  maxTriggerTime: 2
 --- !u!4 &928223138
 Transform:
   m_ObjectHideFlags: 0

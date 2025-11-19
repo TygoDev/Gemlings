@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsSO
   activeDamage: 20
-  autoDamagePerSecond: 13
-  money: 64
+  autoDamagePerSecond: 10
+  money: 0

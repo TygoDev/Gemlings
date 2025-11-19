@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -32,6 +33,10 @@ public class Minigame : MonoBehaviour
 
     private bool initialized;
 
+    private Vector2 greenOriginalPos;
+    private Vector2 yellowOriginalPos;
+    private Vector2 redOriginalPos;
+
     private void Awake()
     {
         bounceSlider = GetComponent<Slider>();
@@ -40,13 +45,18 @@ public class Minigame : MonoBehaviour
 
     private void OnEnable()
     {
-        // Subscribe input only once
         if (clickAction != null)
             clickAction.action.performed += OnAttack;
+
+        // Save original zone positions
+        greenOriginalPos = greenZone.anchoredPosition;
+        yellowOriginalPos = yellowZone.anchoredPosition;
+        redOriginalPos = redZone.anchoredPosition;
 
         UpdateDamageValues();
         ResetMinigame();
     }
+
 
     private void OnDisable()
     {
@@ -138,6 +148,14 @@ public class Minigame : MonoBehaviour
 
     private void EndMinigame(bool success)
     {
+        // Stop all shake coroutines immediately
+        StopAllCoroutines();
+
+        // Reset zone positions so nothing stays offset
+        greenZone.anchoredPosition = greenOriginalPos;
+        yellowZone.anchoredPosition = yellowOriginalPos;
+        redZone.anchoredPosition = redOriginalPos;
+
         if (success)
         {
             Inventory.Instance.AddGem(gem);
@@ -150,6 +168,7 @@ public class Minigame : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+
     // --------------------------
     // Player Interaction
     // --------------------------
@@ -158,11 +177,20 @@ public class Minigame : MonoBehaviour
         if (!initialized || bounceSlider == null || handle == null) return;
 
         if (IsOverlapping(handle, greenZone))
+        {
             nodeHealth -= greenDamage;
+            StartCoroutine(ShakeZone(greenZone));
+        }
         else if (IsOverlapping(handle, yellowZone))
+        {
             nodeHealth -= yellowDamage;
+            StartCoroutine(ShakeZone(yellowZone));
+        }
         else if (IsOverlapping(handle, redZone))
+        {
             nodeHealth += redDamage;
+            StartCoroutine(ShakeZone(redZone));
+        }
 
         healthSlider.value = nodeHealth;
         UpdateHealthText();
@@ -170,6 +198,7 @@ public class Minigame : MonoBehaviour
         if (nodeHealth <= 0f)
             EndMinigame(true);
     }
+
 
     // --------------------------
     // Utility
@@ -179,6 +208,29 @@ public class Minigame : MonoBehaviour
         if (a == null || b == null) return false;
         return GetWorldRect(a).Overlaps(GetWorldRect(b));
     }
+
+    private IEnumerator ShakeZone(RectTransform zone)
+    {
+        Vector2 basePos = zone.anchoredPosition;
+
+        float duration = 0.2f;
+        float strength = 2f;
+        float t = 0f;
+
+        while (t < duration && gameObject.activeInHierarchy)
+        {
+            t += Time.deltaTime;
+            float offset = Random.Range(-strength, strength);
+            zone.anchoredPosition = basePos + new Vector2(offset, offset);
+            yield return null;
+        }
+
+        // Only restore if still active
+        if (gameObject.activeInHierarchy)
+            zone.anchoredPosition = basePos;
+    }
+
+
 
     private Rect GetWorldRect(RectTransform rt)
     {
