@@ -20,6 +20,7 @@ public class ShopItemUI : MonoBehaviour
     {
         button.interactable = false;
         level.text = "MAX";
+        value.gameObject.SetActive(false);
         cost.gameObject.SetActive(false);
     }
 }

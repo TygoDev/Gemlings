@@ -31,9 +31,17 @@ public class ShopItem : MonoBehaviour
                 break;
         }
 
+        if (AtMaxLevel())
+            shopItemUI.MaxLevelReached();
+
         ReCalculateCost();
         ReCalculateValue();
-        shopItemUI.UpdateUI(cost, value, level);
+
+        if (AtMaxLevel())
+            shopItemUI.MaxLevelReached();
+        else
+            shopItemUI.UpdateUI(cost, value, level);
+
     }
 
     public void PurchaseAttempt()
