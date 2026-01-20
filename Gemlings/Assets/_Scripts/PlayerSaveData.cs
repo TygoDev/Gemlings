@@ -11,6 +11,8 @@ public class PlayerSaveData
     public int activeDamageLevel;
     public int autoDamageLevel;
 
+    public List<int> unlockedGemIndexes = new();
+    public int selectedLingIndex;
     public List<GemSaveData> inventoryGems = new();
 }
 

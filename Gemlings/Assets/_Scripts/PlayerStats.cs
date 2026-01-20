@@ -15,7 +15,12 @@ public class PlayerStats : MonoBehaviour
     public int activeDamageLevel = 1;
     public int autoDamageLevel = 1;
 
+    [Header("Unlocked Lings")]
+    public List<int> unlockedLingIndexes = new();
+    public int selectedLingIndex = 0;
+
     private string savePath;
+    private PlayerSaveData cachedData;
 
     private void Awake()
     {
@@ -27,11 +32,35 @@ public class PlayerStats : MonoBehaviour
 
         Instance = this;
         savePath = Path.Combine(Application.persistentDataPath, "playerSave.json");
+
+        LoadCoreData();
     }
 
     private void Start()
     {
-        LoadGame();
+        if (cachedData == null)
+            return;
+
+        Inventory.Instance.ClearInventoryInternal();
+
+        foreach (var gemData in cachedData.inventoryGems)
+        {
+            GemSO baseGem = GameManager.Instance.GetGemByID(gemData.baseGemID);
+            if (baseGem == null)
+            {
+                Debug.LogError($"Gem ID {gemData.baseGemID} not found!");
+                continue;
+            }
+
+            GemSO gemCopy = Instantiate(baseGem);
+
+            gemCopy.adjective = (Adjective)gemData.adjective;
+            gemCopy.trueValue = gemData.trueValue;
+            gemCopy.weight = gemData.weight;
+            gemCopy.durability = gemData.durability;
+
+            Inventory.Instance.AddGemInternal(gemCopy);
+        }
     }
 
     public void UpdateMoney(int amount)
@@ -71,6 +100,9 @@ public class PlayerStats : MonoBehaviour
         data.activeDamageLevel = activeDamageLevel;
         data.autoDamageLevel = autoDamageLevel;
 
+        data.unlockedGemIndexes = unlockedLingIndexes;
+        data.selectedLingIndex = selectedLingIndex;
+
         // Save inventory gems
         List<GemSO> inv = Inventory.Instance.GetAllGems().ToList();
         foreach (GemSO gem in inv)
@@ -91,45 +123,23 @@ public class PlayerStats : MonoBehaviour
         File.WriteAllText(savePath, json);
     }
 
-    public void LoadGame()
+    private void LoadCoreData()
     {
         if (!File.Exists(savePath))
-            return; // First install -> use defaults
+            return;
 
         string json = File.ReadAllText(savePath);
-        PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
+        cachedData = JsonUtility.FromJson<PlayerSaveData>(json);
 
-        // Load money
-        playerStatsSO.activeDamage = data.activeDamage;
-        playerStatsSO.autoDamagePerSecond = data.autoDamagePerSecond;
-        playerStatsSO.money = data.money;
+        playerStatsSO.activeDamage = cachedData.activeDamage;
+        playerStatsSO.autoDamagePerSecond = cachedData.autoDamagePerSecond;
+        playerStatsSO.money = cachedData.money;
 
-        activeDamageLevel = data.activeDamageLevel;
-        autoDamageLevel = data.autoDamageLevel;
+        activeDamageLevel = cachedData.activeDamageLevel;
+        autoDamageLevel = cachedData.autoDamageLevel;
 
-        // Rebuild inventory
-        Inventory.Instance.ClearInventoryInternal();
-
-        foreach (var gemData in data.inventoryGems)
-        {
-            GemSO baseGem = GameManager.Instance.GetGemByID(gemData.baseGemID);
-            if (baseGem == null)
-            {
-                Debug.LogError($"Gem ID {gemData.baseGemID} not found in gem pool!");
-                continue;
-            }
-
-            // Create runtime copy
-            GemSO gemCopy = Instantiate(baseGem);
-
-            // Apply saved instance values
-            gemCopy.adjective = (Adjective)gemData.adjective;
-            gemCopy.trueValue = gemData.trueValue;
-            gemCopy.weight = gemData.weight;
-            gemCopy.durability = gemData.durability;
-
-            Inventory.Instance.AddGemInternal(gemCopy); // silent add
-        }
+        unlockedLingIndexes = cachedData.unlockedGemIndexes;
+        selectedLingIndex = cachedData.selectedLingIndex;
     }
 
     [ContextMenu("Delete Save File")]
@@ -141,6 +151,8 @@ public class PlayerStats : MonoBehaviour
         playerStatsSO.autoDamagePerSecond = 10;
         playerStatsSO.money = 0;
 
+        playerStatsSO.unlockedGemIndexes.Clear();
+        playerStatsSO.selectedLingIndex = 0;
 
         if (File.Exists(path))
         {
