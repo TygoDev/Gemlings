@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 44
   itemName: Aether Crystal
   icon: {fileID: -5164336221551203101, guid: d7995a5707cf93440b4b79f52a9432ff, type: 3}
-  rarityLevel: 1
+  rarityLevel: 5
   baseValue: 1000
   adjective: 0
   trueValue: 1000

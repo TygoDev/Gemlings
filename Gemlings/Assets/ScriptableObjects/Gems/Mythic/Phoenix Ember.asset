@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 48
   itemName: Phoenix Ember
   icon: {fileID: -2952560079397340696, guid: 28dd852d5e27175448aca03e1a832f79, type: 3}
-  rarityLevel: 1
+  rarityLevel: 5
   baseValue: 1000
   adjective: 0
   trueValue: 1000

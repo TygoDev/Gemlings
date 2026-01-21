@@ -35,5 +35,5 @@ public enum Rarity
     Uncommon = 40,
     Valuable = 30,
     Precious = 10,
-    Mythic = 1
+    Mythic = 5
 }

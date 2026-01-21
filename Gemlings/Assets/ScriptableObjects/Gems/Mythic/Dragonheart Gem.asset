@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 47
   itemName: Dragonheart Gem
   icon: {fileID: 5396200243158107789, guid: 3181db2d149a21e429527e19db4dc656, type: 3}
-  rarityLevel: 1
+  rarityLevel: 5
   baseValue: 1000
   adjective: 0
   trueValue: 1000

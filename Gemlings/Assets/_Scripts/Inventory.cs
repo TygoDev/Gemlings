@@ -1,4 +1,4 @@
-using NUnit.Framework.Interfaces;
+﻿using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -55,13 +55,21 @@ public class Inventory : MonoBehaviour
         foreach (Transform child in itemsParent)
             Destroy(child.gameObject);
 
-        foreach (GemSO gem in inventory)
+        // Sort: Mythic (1) → Abundant (50)
+        var sortedInventory = inventory
+            .OrderBy(gem => (int)gem.rarityLevel)
+            .ToList();
+
+        foreach (GemSO gem in sortedInventory)
         {
             var item = Instantiate(itemContainerPrefab, itemsParent)
                 .GetComponent<ItemContainer>();
+
+            item.gameObject.name = $"{gem.rarityLevel} - {gem.name}";
             item.gem = gem;
         }
     }
+
 
     private void UpdateMoneyUI()
     {

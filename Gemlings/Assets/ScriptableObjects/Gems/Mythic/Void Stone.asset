@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 49
   itemName: Void Stone
   icon: {fileID: -5026895620980425611, guid: 4a0de63c21b129c43b8a4f24ab2f084f, type: 3}
-  rarityLevel: 1
+  rarityLevel: 5
   baseValue: 1000
   adjective: 0
   trueValue: 1000
