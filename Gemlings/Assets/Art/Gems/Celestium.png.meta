@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 01b69dab381e6d142bf96a9d24a7f1ea
+guid: 9cdbcb0bcb3d03840b6642a85b96bef9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2657401706454641445
-    second: Spinel_0
+      213: -5123466924375701340
+    second: Celestium_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spinel_0
+      name: Celestium_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 52beeb2c5ccf0e420800000000000000
-      internalID: 2657401706454641445
+      spriteID: 4a88f124af9c5e8b0800000000000000
+      internalID: -5123466924375701340
       vertices: []
       indices: 
       edges: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8006015076e0e5b4bbf10e3576d485cd
+    spriteID: 7811b4fc2743a8c4b985ad13236bf663
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Spinel_0: 2657401706454641445
+      Celestium_0: -5123466924375701340
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

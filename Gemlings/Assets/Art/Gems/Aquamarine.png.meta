@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 01b69dab381e6d142bf96a9d24a7f1ea
+guid: 2588f60c7be38174782a0e3dbbc9657f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2657401706454641445
-    second: Spinel_0
+      213: 7015750009713242563
+    second: Aquamarine_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spinel_0
+      name: Aquamarine_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 52beeb2c5ccf0e420800000000000000
-      internalID: 2657401706454641445
+      spriteID: 3c1b6e97673fc5160800000000000000
+      internalID: 7015750009713242563
       vertices: []
       indices: 
       edges: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8006015076e0e5b4bbf10e3576d485cd
+    spriteID: edc6c945fec5151428df3de9e10d38ec
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Spinel_0: 2657401706454641445
+      Aquamarine_0: 7015750009713242563
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

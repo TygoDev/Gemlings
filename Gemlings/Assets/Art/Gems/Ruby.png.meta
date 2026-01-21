@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 01b69dab381e6d142bf96a9d24a7f1ea
+guid: ab795de2b702948408b176f847204fc8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2657401706454641445
-    second: Spinel_0
+      213: 7774493202208912350
+    second: Ruby_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spinel_0
+      name: Ruby_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 52beeb2c5ccf0e420800000000000000
-      internalID: 2657401706454641445
+      spriteID: ed3f95a506c84eb60800000000000000
+      internalID: 7774493202208912350
       vertices: []
       indices: 
       edges: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8006015076e0e5b4bbf10e3576d485cd
+    spriteID: 6beb04045df168d4f89b3c2f9a9bd219
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Spinel_0: 2657401706454641445
+      Ruby_0: 7774493202208912350
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

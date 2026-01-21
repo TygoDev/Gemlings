@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsSO
   activeDamage: 20
   autoDamagePerSecond: 10
-  money: 2207442
-  unlockedGemIndexes: 00000000010000000200000003000000
+  money: 0
+  unlockedGemIndexes: 
   selectedLingIndex: 0

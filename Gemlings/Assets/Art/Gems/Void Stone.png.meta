@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 01b69dab381e6d142bf96a9d24a7f1ea
+guid: 4a0de63c21b129c43b8a4f24ab2f084f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2657401706454641445
-    second: Spinel_0
+      213: -5026895620980425611
+    second: Void Stone_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spinel_0
+      name: Void Stone_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 52beeb2c5ccf0e420800000000000000
-      internalID: 2657401706454641445
+      spriteID: 57cbe7cf011ec3ab0800000000000000
+      internalID: -5026895620980425611
       vertices: []
       indices: 
       edges: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8006015076e0e5b4bbf10e3576d485cd
+    spriteID: ec76a726dd427cf479d02e27df740d11
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Spinel_0: 2657401706454641445
+      Void Stone_0: -5026895620980425611
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

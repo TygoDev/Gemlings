@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 01b69dab381e6d142bf96a9d24a7f1ea
+guid: 0e2f8f37334b1ab45a3a9bd6cc62ec62
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2657401706454641445
-    second: Spinel_0
+      213: 4063884222152227866
+    second: Emerald_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spinel_0
+      name: Emerald_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 52beeb2c5ccf0e420800000000000000
-      internalID: 2657401706454641445
+      spriteID: a1cb2bd2b21d56830800000000000000
+      internalID: 4063884222152227866
       vertices: []
       indices: 
       edges: []
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8006015076e0e5b4bbf10e3576d485cd
+    spriteID: 69694c8880c8ae24db6e73ff8d6c8fd3
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Spinel_0: 2657401706454641445
+      Emerald_0: 4063884222152227866
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

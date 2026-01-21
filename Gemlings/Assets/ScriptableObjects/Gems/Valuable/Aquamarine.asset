@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7c0d928922cac4492e7758fba673db, type: 3}
+  m_Name: Aquamarine
+  m_EditorClassIdentifier: Assembly-CSharp::GemSO
+  id: 27
+  itemName: Aquamarine
+  icon: {fileID: 7015750009713242563, guid: 2588f60c7be38174782a0e3dbbc9657f, type: 3}
+  rarityLevel: 30
+  baseValue: 30
+  adjective: 0
+  trueValue: 30
+  weight: 8
+  durability: 250
