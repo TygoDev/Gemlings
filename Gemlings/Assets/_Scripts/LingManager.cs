@@ -7,7 +7,7 @@ using UnityEngine;
 public class LingManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> gemlings = new List<GameObject>();
-    [SerializeField] private List <LingOption> lingOptions = new List<LingOption>();
+    [SerializeField] private List<LingOption> lingOptions = new List<LingOption>();
 
     private List<int> unlockedIndexes = new List<int>();
 
@@ -19,52 +19,115 @@ public class LingManager : MonoBehaviour
         {
             if (unlockedIndexes.Contains(lingOptions[i].LingIndex))
             {
+                // Only update UI/state, persistent lists are already populated from PlayerStats
                 UnlockGemling(lingOptions[i]);
             }
         }
 
-        SelectGemling(lingOptions[PlayerStats.Instance.selectedLingIndex]);
+        // Ensure selected index is valid before selecting
+        var selectedIndex = PlayerStats.Instance.selectedLingIndex;
+        if (selectedIndex >= 0 && selectedIndex < lingOptions.Count)
+        {
+            SelectGemling(lingOptions[selectedIndex]);
+        }
+        else if (lingOptions.Count > 0)
+        {
+            SelectGemling(lingOptions[0]);
+        }
     }
 
     public void SelectGemling(LingOption selectedLing)
     {
+        if (selectedLing == null) return;
+
+        // If locked, attempt purchase; abort if purchase failed
         if (!selectedLing.unlocked)
         {
-            BuyGemling(selectedLing);
-            return;
+            if (!TryBuyGemling(selectedLing))
+                return;
         }
 
-        if (!PlayerStats.Instance.unlockedLingIndexes.Contains(selectedLing.LingIndex))
+        // Defensive bounds check for gemlings list
+        int index = selectedLing.LingIndex;
+        if (index < 0 || index >= gemlings.Count) return;
+
+        // Ensure persistent state contains this unlocked index (covers any edge cases)
+        EnsurePersistedUnlocked(index);
+
+        // Activate the chosen gemling and deactivate others
+        for (int i = 0; i < gemlings.Count; i++)
         {
-            PlayerStats.Instance.unlockedLingIndexes.Add(selectedLing.LingIndex);
-            PlayerStats.Instance.GetPlayerStats().unlockedGemIndexes.Add(selectedLing.LingIndex);
-            PlayerStats.Instance.SaveGame();
-        }
-            
-
-        foreach (GameObject gemling in gemlings)
-        {
-            gemling.SetActive(false);
+            gemlings[i].SetActive(i == index);
         }
 
-        gemlings[selectedLing.LingIndex].SetActive(true);
-        PlayerStats.Instance.selectedLingIndex = selectedLing.LingIndex;
-        PlayerStats.Instance.SaveGame();
+        var stats = PlayerStats.Instance;
+        stats.selectedLingIndex = index;
+        stats.SaveGame();
     }
 
-    public void BuyGemling(LingOption selectedLing)
+    // Attempts to buy; returns true when unlocked (either bought now or already unlocked)
+    private bool TryBuyGemling(LingOption selectedLing)
     {
-        if (PlayerStats.Instance.GetMoney() >= selectedLing.cost)
-        {
-            PlayerStats.Instance.UpdateMoney(-selectedLing.cost);
-            UnlockGemling(selectedLing);
-            SelectGemling(selectedLing);
-        }
+        if (selectedLing == null) return false;
+
+        var stats = PlayerStats.Instance;
+        if (stats.GetMoney() < selectedLing.cost) return false;
+
+        stats.UpdateMoney(-selectedLing.cost);
+
+        // Update UI/state and persist the unlock
+        UnlockGemling(selectedLing);
+        AddToUnlockedIndexes(selectedLing.LingIndex);
+
+        return true;
     }
 
+    // Update UI/state for an unlocked LingOption (does not persist PlayerStats)
     private void UnlockGemling(LingOption lingOption)
     {
+        if (lingOption == null) return;
+        if (lingOption.unlocked) return;
+
         lingOption.unlocked = true;
-        lingOption.costText.text = "unlocked!";
+        if (lingOption.costText != null)
+            lingOption.costText.text = "unlocked!";
+    }
+
+    // Persist unlocked index to PlayerStats and save once
+    private void AddToUnlockedIndexes(int index)
+    {
+        var stats = PlayerStats.Instance;
+        var saveData = stats.GetPlayerStats();
+
+        if (!stats.unlockedLingIndexes.Contains(index))
+            stats.unlockedLingIndexes.Add(index);
+
+        if (!saveData.unlockedGemIndexes.Contains(index))
+            saveData.unlockedGemIndexes.Add(index);
+
+        stats.SaveGame();
+    }
+
+    // Ensure persistence matches the in-memory unlocked flag
+    private void EnsurePersistedUnlocked(int index)
+    {
+        var stats = PlayerStats.Instance;
+        var saveData = stats.GetPlayerStats();
+
+        bool changed = false;
+        if (!stats.unlockedLingIndexes.Contains(index))
+        {
+            stats.unlockedLingIndexes.Add(index);
+            changed = true;
+        }
+
+        if (!saveData.unlockedGemIndexes.Contains(index))
+        {
+            saveData.unlockedGemIndexes.Add(index);
+            changed = true;
+        }
+
+        if (changed)
+            stats.SaveGame();
     }
 }
