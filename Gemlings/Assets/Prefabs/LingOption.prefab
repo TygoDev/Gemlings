@@ -359,7 +359,6 @@ GameObject:
   - component: {fileID: 4941160562744650219}
   - component: {fileID: 2604459148337372588}
   - component: {fileID: 3482055142402311780}
-  - component: {fileID: 6942624416815194156}
   m_Layer: 5
   m_Name: LingOption
   m_TagString: Untagged
@@ -483,18 +482,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6942624416815194156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7211047543730294827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 012944c230bd84841b2076e898f0f03f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LingOption
-  cost: 0
-  gemlings: []
-  gemlingIndex: 0
