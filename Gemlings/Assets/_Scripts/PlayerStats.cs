@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] private PlayerStatsSO playerStatsSO;
 
-    [Header("Shop levels")]
+    [Header("Shop Levels")]
     public int activeDamageLevel = 1;
     public int autoDamageLevel = 1;
 
@@ -22,6 +22,8 @@ public class PlayerStats : MonoBehaviour
     private string savePath;
     private PlayerSaveData cachedData;
 
+    private const string PLAYER_PREFS_SAVE_KEY = "PLAYER_SAVE_JSON";
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -31,8 +33,9 @@ public class PlayerStats : MonoBehaviour
         }
 
         Instance = this;
-        savePath = Path.Combine(Application.persistentDataPath, "playerSave.json");
+        DontDestroyOnLoad(gameObject);
 
+        savePath = Path.Combine(Application.persistentDataPath, "playerSave.json");
         LoadCoreData();
     }
 
@@ -47,10 +50,7 @@ public class PlayerStats : MonoBehaviour
         {
             GemSO baseGem = GameManager.Instance.GetGemByID(gemData.baseGemID);
             if (baseGem == null)
-            {
-                Debug.LogError($"Gem ID {gemData.baseGemID} not found!");
                 continue;
-            }
 
             GemSO gemCopy = Instantiate(baseGem);
 
@@ -62,6 +62,10 @@ public class PlayerStats : MonoBehaviour
             Inventory.Instance.AddGemInternal(gemCopy);
         }
     }
+
+    // ============================================================
+    // PUBLIC UPDATE METHODS (SAVE IMMEDIATELY)
+    // ============================================================
 
     public void UpdateMoney(int amount)
     {
@@ -86,50 +90,81 @@ public class PlayerStats : MonoBehaviour
 
     public int GetMoney() => playerStatsSO.money;
     public PlayerStatsSO GetPlayerStats() => playerStatsSO;
-    // ============================================================  
+
+    // ============================================================
     // SAVE & LOAD
-    // ============================================================  
+    // ============================================================
 
     public void SaveGame()
     {
-        PlayerSaveData data = new PlayerSaveData();
-        data.activeDamage = playerStatsSO.activeDamage;
-        data.autoDamagePerSecond = playerStatsSO.autoDamagePerSecond;
-        data.money = playerStatsSO.money;
+        Debug.Log("SAVING GAME: " + savePath);
 
-        data.activeDamageLevel = activeDamageLevel;
-        data.autoDamageLevel = autoDamageLevel;
-
-        data.unlockedGemIndexes = unlockedLingIndexes;
-        data.selectedLingIndex = selectedLingIndex;
-
-        // Save inventory gems
-        List<GemSO> inv = Inventory.Instance.GetAllGems().ToList();
-        foreach (GemSO gem in inv)
+        PlayerSaveData data = new PlayerSaveData
         {
-            GemSaveData gemData = new GemSaveData
+            activeDamage = playerStatsSO.activeDamage,
+            autoDamagePerSecond = playerStatsSO.autoDamagePerSecond,
+            money = playerStatsSO.money,
+
+            activeDamageLevel = activeDamageLevel,
+            autoDamageLevel = autoDamageLevel,
+
+            unlockedGemIndexes = new List<int>(unlockedLingIndexes),
+            selectedLingIndex = selectedLingIndex
+        };
+
+        foreach (GemSO gem in Inventory.Instance.GetAllGems())
+        {
+            data.inventoryGems.Add(new GemSaveData
             {
                 baseGemID = gem.id,
                 adjective = (int)gem.adjective,
                 trueValue = gem.trueValue,
                 weight = gem.weight,
                 durability = gem.durability
-            };
-
-            data.inventoryGems.Add(gemData);
+            });
         }
 
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(savePath, json);
+
+        // File save (desktop + WebGL when allowed)
+        try
+        {
+            File.WriteAllText(savePath, json);
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("File save failed: " + e.Message);
+        }
+
+        // PlayerPrefs mirror (GUARANTEED on itch.io)
+        PlayerPrefs.SetString(PLAYER_PREFS_SAVE_KEY, json);
+        PlayerPrefs.Save();
     }
 
     private void LoadCoreData()
     {
-        if (!File.Exists(savePath))
+        string json = null;
+
+        // 1️⃣ Try file system
+        try
+        {
+            if (File.Exists(savePath))
+                json = File.ReadAllText(savePath);
+        }
+        catch { }
+
+        // 2️⃣ Fallback to PlayerPrefs
+        if (string.IsNullOrEmpty(json) && PlayerPrefs.HasKey(PLAYER_PREFS_SAVE_KEY))
+        {
+            json = PlayerPrefs.GetString(PLAYER_PREFS_SAVE_KEY);
+        }
+
+        if (string.IsNullOrEmpty(json))
             return;
 
-        string json = File.ReadAllText(savePath);
         cachedData = JsonUtility.FromJson<PlayerSaveData>(json);
+        if (cachedData == null)
+            return;
 
         playerStatsSO.activeDamage = cachedData.activeDamage;
         playerStatsSO.autoDamagePerSecond = cachedData.autoDamagePerSecond;
@@ -138,32 +173,45 @@ public class PlayerStats : MonoBehaviour
         activeDamageLevel = cachedData.activeDamageLevel;
         autoDamageLevel = cachedData.autoDamageLevel;
 
-        unlockedLingIndexes = cachedData.unlockedGemIndexes;
+        unlockedLingIndexes = new List<int>(cachedData.unlockedGemIndexes);
         selectedLingIndex = cachedData.selectedLingIndex;
     }
+
+    // ============================================================
+    // SAFETY NETS
+    // ============================================================
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+            SaveGame();
+    }
+
+    private void OnDisable()
+    {
+        SaveGame();
+    }
+
+    // ============================================================
+    // DEBUG
+    // ============================================================
 
     [ContextMenu("Delete Save File")]
     public void DeleteSaveFile()
     {
-        string path = Path.Combine(Application.persistentDataPath, "playerSave.json");
-
         playerStatsSO.activeDamage = 20;
         playerStatsSO.autoDamagePerSecond = 10;
         playerStatsSO.money = 0;
 
-        playerStatsSO.unlockedGemIndexes.Clear();
-        playerStatsSO.selectedLingIndex = 0;
+        unlockedLingIndexes.Clear();
+        selectedLingIndex = 0;
 
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-            Debug.Log("Save file deleted! Path: " + path);
-        }
-        else
-        {
-            Debug.Log("No save file to delete. Path checked: " + path);
-        }
+        if (File.Exists(savePath))
+            File.Delete(savePath);
+
+        PlayerPrefs.DeleteKey(PLAYER_PREFS_SAVE_KEY);
+        PlayerPrefs.Save();
+
+        Debug.Log("Save data deleted.");
     }
-
 }
-
