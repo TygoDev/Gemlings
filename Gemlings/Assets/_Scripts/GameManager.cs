@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
     {
         var values = Enum.GetValues(typeof(Adjective)).Cast<Adjective>().ToArray();
 
-        float exponent = 3f; // increase this to make high values rarer
+        float exponent = 2f; // increase this to make high values rarer
         float totalWeight = values.Sum(v => 1f / Mathf.Pow((float)v, exponent));
         float randomPoint = UnityEngine.Random.value * totalWeight;
 
