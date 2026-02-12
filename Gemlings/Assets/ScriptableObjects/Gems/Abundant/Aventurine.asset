@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Aventurine
   icon: {fileID: -1607412298953692198, guid: 0006dc9c364c2314a9febccc40ab8183, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 10
+  adjective: 100
   trueValue: 10
   weight: 5
   durability: 100

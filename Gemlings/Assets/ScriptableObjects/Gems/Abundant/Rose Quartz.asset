@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Rose Quartz
   icon: {fileID: 5498729815953563637, guid: 9a869ee72eb9dfb499bb823cd99ce84b, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 10
+  adjective: 100
   trueValue: 10
   weight: 4.9
   durability: 96

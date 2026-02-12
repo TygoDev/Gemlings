@@ -197,6 +197,11 @@ public class GameManager : MonoBehaviour
         return gemPool.FirstOrDefault(g => g.id == id);
     }
 
+    public List<GemSO> GetGemSOs()
+    {
+        return gemPool;
+    }
+
     // --------------------------
     // Public API
     // --------------------------

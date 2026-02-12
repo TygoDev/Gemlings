@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Obsidian
   icon: {fileID: 6522594400000613951, guid: cf02a238f282f184c9f630cdb7777b38, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 12
+  adjective: 100
   trueValue: 12
   weight: 5.5
   durability: 90

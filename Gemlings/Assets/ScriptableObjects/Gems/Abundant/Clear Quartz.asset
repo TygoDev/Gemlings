@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Clear Quartz
   icon: {fileID: 221024203569152802, guid: bfecfbe7816f3c5458400fcd4204a712, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 11
+  adjective: 100
   trueValue: 11
   weight: 5
   durability: 102

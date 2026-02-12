@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Green Quartz
   icon: {fileID: -8759897541875842102, guid: 5e1242259f33cad4c83ef98e24c50559, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 9
+  adjective: 100
   trueValue: 9
   weight: 4.8
   durability: 99

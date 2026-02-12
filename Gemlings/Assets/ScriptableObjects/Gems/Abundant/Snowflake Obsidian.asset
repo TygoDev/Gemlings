@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Snowflake Obsidian
   icon: {fileID: 8399849642910897873, guid: 6cb380d56a08ca34f85b194b2135ad27, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 11
+  adjective: 100
   trueValue: 11
   weight: 5.2
   durability: 92

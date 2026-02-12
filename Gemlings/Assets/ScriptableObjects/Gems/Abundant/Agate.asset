@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd7c0d928922cac4492e7758fba673db, type: 3}
   m_Name: Agate
   m_EditorClassIdentifier: Assembly-CSharp::GemSO
-  adjective: 0
+  id: 0
   itemName: Agate
   icon: {fileID: -1803536678668263562, guid: fe125b805761ad8419196dad2d900fbd, type: 3}
   rarityLevel: 50
   baseValue: 9
+  adjective: 100
   trueValue: 9
   weight: 5.2
   durability: 95

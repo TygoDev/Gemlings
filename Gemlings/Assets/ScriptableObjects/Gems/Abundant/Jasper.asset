@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Jasper
   icon: {fileID: -3782264116233972765, guid: 61922ec2eccede040bff86cd3a411d86, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 11
+  adjective: 100
   trueValue: 11
   weight: 5.4
   durability: 105

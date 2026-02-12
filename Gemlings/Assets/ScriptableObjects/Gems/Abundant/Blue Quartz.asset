@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Blue Quartz
   icon: {fileID: 5888821824450664893, guid: 89989df84254fdc43947b4d59e17eb22, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 10
+  adjective: 100
   trueValue: 10
   weight: 5.1
   durability: 98

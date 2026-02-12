@@ -17,7 +17,7 @@ MonoBehaviour:
   icon: {fileID: 7858647051872537311, guid: 0d13714463f1bdc40bafd30ab0fafd3e, type: 3}
   rarityLevel: 10
   baseValue: 60
-  adjective: 0
+  adjective: 100
   trueValue: 60
   weight: 9
   durability: 350

@@ -44,8 +44,13 @@ public class PlayerStats : MonoBehaviour
         if (cachedData == null)
             return;
 
+        // Clear runtime lists
         Inventory.Instance.ClearInventoryInternal();
+        Inventory.Instance.ClearCollectionInternal();   // 👈 ADD THIS
 
+        // ========================
+        // Load Inventory
+        // ========================
         foreach (var gemData in cachedData.inventoryGems)
         {
             GemSO baseGem = GameManager.Instance.GetGemByID(gemData.baseGemID);
@@ -61,7 +66,27 @@ public class PlayerStats : MonoBehaviour
 
             Inventory.Instance.AddGemInternal(gemCopy);
         }
+
+        // ========================
+        // Load Collection
+        // ========================
+        foreach (var gemData in cachedData.collectionGems)
+        {
+            GemSO baseGem = GameManager.Instance.GetGemByID(gemData.baseGemID);
+            if (baseGem == null)
+                continue;
+
+            GemSO gemCopy = Instantiate(baseGem);
+
+            gemCopy.adjective = (Adjective)gemData.adjective;
+            gemCopy.trueValue = gemData.trueValue;
+            gemCopy.weight = gemData.weight;
+            gemCopy.durability = gemData.durability;
+
+            Inventory.Instance.AddCollectionInternal(gemCopy);
+        }
     }
+
 
     // ============================================================
     // PUBLIC UPDATE METHODS (SAVE IMMEDIATELY)
@@ -115,6 +140,18 @@ public class PlayerStats : MonoBehaviour
         foreach (GemSO gem in Inventory.Instance.GetAllGems())
         {
             data.inventoryGems.Add(new GemSaveData
+            {
+                baseGemID = gem.id,
+                adjective = (int)gem.adjective,
+                trueValue = gem.trueValue,
+                weight = gem.weight,
+                durability = gem.durability
+            });
+        }
+
+        foreach (GemSO gem in Inventory.Instance.GetCollection())
+        {
+            data.collectionGems.Add(new GemSaveData
             {
                 baseGemID = gem.id,
                 adjective = (int)gem.adjective,
@@ -199,6 +236,7 @@ public class PlayerStats : MonoBehaviour
     [ContextMenu("Delete Save File")]
     public void DeleteSaveFile()
     {
+        // Reset runtime values
         playerStatsSO.activeDamage = 20;
         playerStatsSO.autoDamagePerSecond = 10;
         playerStatsSO.money = 0;
@@ -206,12 +244,26 @@ public class PlayerStats : MonoBehaviour
         unlockedLingIndexes.Clear();
         selectedLingIndex = 0;
 
-        if (File.Exists(savePath))
-            File.Delete(savePath);
+        string path = Path.Combine(Application.persistentDataPath, "playerSave.json");
 
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Deleted file at: " + path);
+        }
+        else
+        {
+            Debug.Log("No file found at: " + path);
+        }
+
+
+        // Delete ALL PlayerPrefs (important for editor testing)
         PlayerPrefs.DeleteKey(PLAYER_PREFS_SAVE_KEY);
         PlayerPrefs.Save();
 
-        Debug.Log("Save data deleted.");
+        cachedData = null;
+
+        Debug.Log("Save data deleted (File + PlayerPrefs).");
     }
+
 }

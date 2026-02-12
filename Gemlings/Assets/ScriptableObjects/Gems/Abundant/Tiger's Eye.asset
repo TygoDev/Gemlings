@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Tiger's Eye
   icon: {fileID: -7788502611564612177, guid: 4b34faf214608b44f881a002032ff4df, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 12
+  adjective: 100
   trueValue: 12
   weight: 5.1
   durability: 94

@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Quartz
   icon: {fileID: 1806053187690655151, guid: cf6efd87ed483254fb4149c1051357ef, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 10
+  adjective: 100
   trueValue: 10
   weight: 5
   durability: 100

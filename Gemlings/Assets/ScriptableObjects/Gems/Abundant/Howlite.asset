@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: Howlite
   icon: {fileID: -2741431629652722600, guid: 371f14bf93cdcfd40aef710fb512fed6, type: 3}
   rarityLevel: 50
-  adjective: 0
   baseValue: 8
+  adjective: 100
   trueValue: 8
   weight: 4.6
   durability: 110
