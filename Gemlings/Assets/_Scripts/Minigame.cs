@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,6 +23,7 @@ public class Minigame : MonoBehaviour
     [SerializeField] private RectTransform greenZone;
     [SerializeField] private RectTransform yellowZone;
     [SerializeField] private RectTransform redZone;
+
     private PlayerStatsSO playerStats => PlayerStats.Instance.GetPlayerStats();
 
     private Slider bounceSlider;
@@ -37,6 +39,9 @@ public class Minigame : MonoBehaviour
     private Vector2 yellowOriginalPos;
     private Vector2 redOriginalPos;
 
+    // 🔹 Track active shake coroutines
+    private Dictionary<RectTransform, Coroutine> activeShakes = new Dictionary<RectTransform, Coroutine>();
+
     private void Awake()
     {
         bounceSlider = GetComponent<Slider>();
@@ -48,7 +53,6 @@ public class Minigame : MonoBehaviour
         if (clickAction != null)
             clickAction.action.performed += OnAttack;
 
-        // Save original zone positions
         greenOriginalPos = greenZone.anchoredPosition;
         yellowOriginalPos = yellowZone.anchoredPosition;
         redOriginalPos = redZone.anchoredPosition;
@@ -56,7 +60,6 @@ public class Minigame : MonoBehaviour
         UpdateDamageValues();
         ResetMinigame();
     }
-
 
     private void OnDisable()
     {
@@ -136,7 +139,7 @@ public class Minigame : MonoBehaviour
         if (autoDamageTimer >= 1f)
         {
             autoDamageTimer = 0f;
-            nodeHealth -= playerStats.autoDamagePerSecond; // Apply automatic damage each second
+            nodeHealth -= playerStats.autoDamagePerSecond;
             healthSlider.value = nodeHealth;
             UpdateHealthText();
 
@@ -145,29 +148,24 @@ public class Minigame : MonoBehaviour
         }
     }
 
-
     private void EndMinigame(bool success)
     {
-        // Stop all shake coroutines immediately
         StopAllCoroutines();
 
-        // Reset zone positions so nothing stays offset
+        // Reset positions safely
         greenZone.anchoredPosition = greenOriginalPos;
         yellowZone.anchoredPosition = yellowOriginalPos;
         redZone.anchoredPosition = redOriginalPos;
 
+        activeShakes.Clear();
+
         if (success)
-        {
             Inventory.Instance.AddGem(gem);
-        }
         else
-        {
             Debug.Log("Minigame Failed!");
-        }
 
         gameObject.SetActive(false);
     }
-
 
     // --------------------------
     // Player Interaction
@@ -179,17 +177,17 @@ public class Minigame : MonoBehaviour
         if (IsOverlapping(handle, greenZone))
         {
             nodeHealth -= greenDamage;
-            StartCoroutine(ShakeZone(greenZone));
+            StartZoneShake(greenZone);
         }
         else if (IsOverlapping(handle, yellowZone))
         {
             nodeHealth -= yellowDamage;
-            StartCoroutine(ShakeZone(yellowZone));
+            StartZoneShake(yellowZone);
         }
         else if (IsOverlapping(handle, redZone))
         {
             nodeHealth += redDamage;
-            StartCoroutine(ShakeZone(redZone));
+            StartZoneShake(redZone);
         }
 
         healthSlider.value = nodeHealth;
@@ -199,6 +197,52 @@ public class Minigame : MonoBehaviour
             EndMinigame(true);
     }
 
+    // --------------------------
+    // Shake System (FIXED)
+    // --------------------------
+    private void StartZoneShake(RectTransform zone)
+    {
+        if (activeShakes.ContainsKey(zone) && activeShakes[zone] != null)
+        {
+            StopCoroutine(activeShakes[zone]);
+            zone.anchoredPosition = GetOriginalPosition(zone);
+        }
+
+        Coroutine shake = StartCoroutine(ShakeZone(zone));
+        activeShakes[zone] = shake;
+    }
+
+    private IEnumerator ShakeZone(RectTransform zone)
+    {
+        Vector2 basePos = GetOriginalPosition(zone);
+        zone.anchoredPosition = basePos;
+
+        float duration = 0.2f;
+        float strength = 2f;
+        float timer = 0f;
+
+        while (timer < duration && gameObject.activeInHierarchy)
+        {
+            timer += Time.deltaTime;
+            float offsetX = Random.Range(-strength, strength);
+            float offsetY = Random.Range(-strength, strength);
+            zone.anchoredPosition = basePos + new Vector2(offsetX, offsetY);
+            yield return null;
+        }
+
+        zone.anchoredPosition = basePos;
+
+        if (activeShakes.ContainsKey(zone))
+            activeShakes[zone] = null;
+    }
+
+    private Vector2 GetOriginalPosition(RectTransform zone)
+    {
+        if (zone == greenZone) return greenOriginalPos;
+        if (zone == yellowZone) return yellowOriginalPos;
+        if (zone == redZone) return redOriginalPos;
+        return zone.anchoredPosition;
+    }
 
     // --------------------------
     // Utility
@@ -208,29 +252,6 @@ public class Minigame : MonoBehaviour
         if (a == null || b == null) return false;
         return GetWorldRect(a).Overlaps(GetWorldRect(b));
     }
-
-    private IEnumerator ShakeZone(RectTransform zone)
-    {
-        Vector2 basePos = zone.anchoredPosition;
-
-        float duration = 0.2f;
-        float strength = 2f;
-        float t = 0f;
-
-        while (t < duration && gameObject.activeInHierarchy)
-        {
-            t += Time.deltaTime;
-            float offset = Random.Range(-strength, strength);
-            zone.anchoredPosition = basePos + new Vector2(offset, offset);
-            yield return null;
-        }
-
-        // Only restore if still active
-        if (gameObject.activeInHierarchy)
-            zone.anchoredPosition = basePos;
-    }
-
-
 
     private Rect GetWorldRect(RectTransform rt)
     {
