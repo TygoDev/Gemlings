@@ -12,7 +12,7 @@ public class ShopItemUI : MonoBehaviour
     public void UpdateUI(int pCost, int pValue, int pLevel)
     {
         cost.text = $"$ {pCost}";
-        value.text = $"+{pValue}";
+        value.text = $"+{pValue} Damage";
         level.text = $"Level: {pLevel}";
     }
 
