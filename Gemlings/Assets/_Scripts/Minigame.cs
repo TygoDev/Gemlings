@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -34,6 +35,7 @@ public class Minigame : MonoBehaviour
     private float t;
 
     private bool initialized;
+    private bool isShaking;
 
     private Vector2 greenOriginalPos;
     private Vector2 yellowOriginalPos;
@@ -198,7 +200,7 @@ public class Minigame : MonoBehaviour
     }
 
     // --------------------------
-    // Shake System (FIXED)
+    // Shake System
     // --------------------------
     private void StartZoneShake(RectTransform zone)
     {
@@ -211,6 +213,24 @@ public class Minigame : MonoBehaviour
         Coroutine shake = StartCoroutine(ShakeZone(zone));
         activeShakes[zone] = shake;
     }
+
+    private void MoveZone(RectTransform zone, RectTransform parentZone)
+    {
+        if (zone == null || parentZone == null) return;
+
+        float parentWidth = parentZone.rect.width;
+        float zoneWidth = zone.rect.width;
+
+        float minX = -parentWidth / 2f + zoneWidth / 2f;
+        float maxX = parentWidth / 2f - zoneWidth / 2f;
+
+        float randomX = Random.Range(minX, maxX);
+
+        Vector2 newPos = zone.anchoredPosition;
+        newPos.x = randomX;
+        zone.anchoredPosition = newPos;
+    }
+
 
     private IEnumerator ShakeZone(RectTransform zone)
     {
@@ -234,6 +254,9 @@ public class Minigame : MonoBehaviour
 
         if (activeShakes.ContainsKey(zone))
             activeShakes[zone] = null;
+
+        MoveZone(yellowZone, redZone);
+        MoveZone(greenZone, yellowZone);
     }
 
     private Vector2 GetOriginalPosition(RectTransform zone)
