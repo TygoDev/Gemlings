@@ -16,7 +16,6 @@ public class CollectionLog : MonoBehaviour
 
     public void PopulateList()
     {
-        // Clear old UI (important if repopulating)
         foreach (Transform child in collectionLogContent.transform)
             Destroy(child.gameObject);
 
@@ -36,20 +35,17 @@ public class CollectionLog : MonoBehaviour
             CollectionLogItem logItem =
                 newLogItem.GetComponent<CollectionLogItem>();
 
-            // Check if player has unlocked this gem type
             GemSO unlockedVersion = unlockedCollection
                 .FirstOrDefault(g => g.id == gem.id);
 
             if (unlockedVersion != null)
             {
-                // Player has this gem unlocked
-                logItem.gem = unlockedVersion; // set BEST unlocked variant
+                logItem.gem = unlockedVersion;
                 logItem.Unlock(true);
             }
             else
             {
-                // Still locked
-                logItem.gem = gem; // default base gem (for silhouette etc.)
+                logItem.gem = gem;
                 logItem.Unlock(false);
             }
 

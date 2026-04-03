@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject minigameObject;
-    [SerializeField] private List<GemSO> gemPool; // All possible gems
+    [SerializeField] private List<GemSO> gemPool;
 
     [Header("Timing")]
     [SerializeField] private float minTriggerTime = 5f;
@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton setup
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -44,9 +43,6 @@ public class GameManager : MonoBehaviour
         ChangeState(State.WaitingForMinigame);
     }
 
-    // --------------------------
-    // State Management
-    // --------------------------
     private void ChangeState(State newState)
     {
         if (currentState == newState) return;
@@ -65,14 +61,10 @@ public class GameManager : MonoBehaviour
                 break;
 
             case State.Idle:
-                // Reserved for future pause/menu logic
                 break;
         }
     }
 
-    // --------------------------
-    // Minigame Logic
-    // --------------------------
     private IEnumerator RandomMinigameRoutine()
     {
         float waitTime = UnityEngine.Random.Range(minTriggerTime, maxTriggerTime);
@@ -91,7 +83,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Pick and configure gem before starting
         GemSO randomGem = GenerateRandomGemInstance();
         if (randomGem == null)
         {
@@ -100,11 +91,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Assign gem to minigame
         Minigame minigame = minigameObject.GetComponent<Minigame>();
         minigame.gem = randomGem;
 
-        // Activate and monitor
         minigameObject.SetActive(true);
         StartCoroutine(WaitForMinigameEnd(minigame));
     }
@@ -119,9 +108,6 @@ public class GameManager : MonoBehaviour
         ChangeState(State.WaitingForMinigame);
     }
 
-    // --------------------------
-    // Gem Generation
-    // --------------------------
     private GemSO GenerateRandomGemInstance()
     {
         if (gemPool == null || gemPool.Count == 0)
@@ -130,19 +116,19 @@ public class GameManager : MonoBehaviour
         // Weighted random pick by rarity
         GemSO chosen = GetWeightedRandomGem();
 
-        // Create a *runtime instance* so we can modify stats without affecting the original asset
+        // Create run time instance to modify properties without affecting the original ScriptableObject
         GemSO instance = ScriptableObject.Instantiate(chosen);
 
-        // Randomize weight (for example, 50%–200% of original)
+        // Randomize weight
         float weightMultiplier = UnityEngine.Random.Range(0.5f, 2f);
         instance.weight *= weightMultiplier;
 
         instance.adjective = GetAdjective();
 
-        // Calculate true value: base value * weight
+        // Calculate true value
         instance.trueValue = Mathf.RoundToInt((instance.baseValue * instance.weight) / 100 * (float)instance.adjective);
 
-        // Optional: adjust durability slightly for variation
+        // adjust durability slightly for variation
         instance.durability = Mathf.RoundToInt(instance.durability * UnityEngine.Random.Range(0.9f, 1.1f));
 
         return instance;
@@ -153,7 +139,7 @@ public class GameManager : MonoBehaviour
         float totalWeight = 0f;
         foreach (var gem in gemPool)
         {
-            totalWeight += Mathf.Max((float)gem.rarityLevel, 0.001f); // avoid 0 weights
+            totalWeight += Mathf.Max((float)gem.rarityLevel, 0.001f);
         }
 
         float randomValue = UnityEngine.Random.Range(0, totalWeight);
@@ -166,7 +152,6 @@ public class GameManager : MonoBehaviour
                 return gem;
         }
 
-        // Fallback (should not happen)
         return gemPool[UnityEngine.Random.Range(0, gemPool.Count)];
     }
 
@@ -174,7 +159,7 @@ public class GameManager : MonoBehaviour
     {
         var values = Enum.GetValues(typeof(Adjective)).Cast<Adjective>().ToArray();
 
-        float exponent = 2f; // increase this to make high values rarer
+        float exponent = 2f; // increase to make high values rarer
         float totalWeight = values.Sum(v => 1f / Mathf.Pow((float)v, exponent));
         float randomPoint = UnityEngine.Random.value * totalWeight;
 
@@ -188,7 +173,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        return values[values.Length - 1]; // fallback
+        return values[values.Length - 1];
     }
 
 
@@ -202,9 +187,6 @@ public class GameManager : MonoBehaviour
         return gemPool;
     }
 
-    // --------------------------
-    // Public API
-    // --------------------------
     public void ForceTriggerMinigame()
     {
         if (currentState != State.PlayingMinigame)

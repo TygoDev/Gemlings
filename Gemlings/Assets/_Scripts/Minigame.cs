@@ -40,7 +40,6 @@ public class Minigame : MonoBehaviour
     private Vector2 yellowOriginalPos;
     private Vector2 redOriginalPos;
 
-    // 🔹 Track active shake coroutines
     private Dictionary<RectTransform, Coroutine> activeShakes = new Dictionary<RectTransform, Coroutine>();
 
     private void Awake()
@@ -82,9 +81,6 @@ public class Minigame : MonoBehaviour
         greenDamage = playerStats.activeDamage;
     }
 
-    // --------------------------
-    // Reset / Initialization
-    // --------------------------
     private void ResetMinigame()
     {
         if (gem == null)
@@ -110,9 +106,6 @@ public class Minigame : MonoBehaviour
         initialized = true;
     }
 
-    // --------------------------
-    // Core Game Loop
-    // --------------------------
     private void UpdateBounce()
     {
         if (!initialized || bounceSlider == null) return;
@@ -153,7 +146,6 @@ public class Minigame : MonoBehaviour
     {
         StopAllCoroutines();
 
-        // Reset positions safely
         greenZone.anchoredPosition = greenOriginalPos;
         yellowZone.anchoredPosition = yellowOriginalPos;
         redZone.anchoredPosition = redOriginalPos;
@@ -168,9 +160,6 @@ public class Minigame : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // --------------------------
-    // Player Interaction
-    // --------------------------
     private void OnAttack(InputAction.CallbackContext context)
     {
         if (!initialized || bounceSlider == null || handle == null) return;
@@ -197,10 +186,6 @@ public class Minigame : MonoBehaviour
         if (nodeHealth <= 0f)
             EndMinigame(true);
     }
-
-    // --------------------------
-    // Shake System
-    // --------------------------
     private void StartZoneShake(RectTransform zone)
     {
         if (activeShakes.ContainsKey(zone) && activeShakes[zone] != null)
@@ -266,9 +251,6 @@ public class Minigame : MonoBehaviour
         return zone.anchoredPosition;
     }
 
-    // --------------------------
-    // Utility
-    // --------------------------
     private bool IsOverlapping(RectTransform a, RectTransform b)
     {
         if (a == null || b == null) return false;

@@ -51,10 +51,6 @@ public class Inventory : MonoBehaviour
         UpdateMoneyUI();
     }
 
-    // ==========================
-    // UI
-    // ==========================
-
     private void PopulateInventory()
     {
         foreach (Transform child in itemsParent)
@@ -80,18 +76,12 @@ public class Inventory : MonoBehaviour
             moneyText.text = $"{playerStats.GetMoney()}";
     }
 
-    // ==========================
-    // Inventory Management
-    // ==========================
-
     public void AddGem(GemSO newGem)
     {
         if (newGem == null) return;
 
-        // Add to normal inventory
         inventory.Add(newGem);
 
-        // Update collection log
         UpdateCollection(newGem);
 
         PopulateInventory();
@@ -100,19 +90,15 @@ public class Inventory : MonoBehaviour
 
     private void UpdateCollection(GemSO newGem)
     {
-        // Find gem in collection with same base identity
-        // This assumes gems share a base name or ID
         GemSO existingGem = collection
             .FirstOrDefault(g => g.id == newGem.id);
 
         if (existingGem == null)
         {
-            // New gem type discovered
             collection.Add(newGem);
         }
         else
         {
-            // Replace only if new gem is higher rarity/value
             if (newGem.trueValue > existingGem.trueValue)
             {
                 int index = collection.IndexOf(existingGem);
@@ -153,10 +139,6 @@ public class Inventory : MonoBehaviour
 
         PlayerStats.Instance.SaveGame();
     }
-
-    // ==========================
-    // Internal Save Helpers
-    // ==========================
 
     public void ClearCollectionInternal()
     {

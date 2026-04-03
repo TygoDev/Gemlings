@@ -35,12 +35,15 @@ public class CollectionLogItem : MonoBehaviour
         {
             itemWeightText.text = gem.weight.ToString("0.00") + " kg";
             itemValueText.text = "$ " + gem.trueValue.ToString();
+            itemSpriteImage.color = new Color(1, 1, 1);
             GetComponent<Button>().interactable = true;
         }
         else
         {
             itemWeightText.text = "??? kg";
             itemValueText.text = "$ ???";
+            itemNameText.text = "???";
+            itemSpriteImage.color = new Color(0,0,0);
             GetComponent<Button>().interactable = false;
         }
             SetRarityColour();

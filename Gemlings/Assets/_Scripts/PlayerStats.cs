@@ -44,13 +44,9 @@ public class PlayerStats : MonoBehaviour
         if (cachedData == null)
             return;
 
-        // Clear runtime lists
         Inventory.Instance.ClearInventoryInternal();
-        Inventory.Instance.ClearCollectionInternal();   // 👈 ADD THIS
+        Inventory.Instance.ClearCollectionInternal();
 
-        // ========================
-        // Load Inventory
-        // ========================
         foreach (var gemData in cachedData.inventoryGems)
         {
             GemSO baseGem = GameManager.Instance.GetGemByID(gemData.baseGemID);
@@ -67,9 +63,6 @@ public class PlayerStats : MonoBehaviour
             Inventory.Instance.AddGemInternal(gemCopy);
         }
 
-        // ========================
-        // Load Collection
-        // ========================
         foreach (var gemData in cachedData.collectionGems)
         {
             GemSO baseGem = GameManager.Instance.GetGemByID(gemData.baseGemID);
@@ -86,11 +79,6 @@ public class PlayerStats : MonoBehaviour
             Inventory.Instance.AddCollectionInternal(gemCopy);
         }
     }
-
-
-    // ============================================================
-    // PUBLIC UPDATE METHODS (SAVE IMMEDIATELY)
-    // ============================================================
 
     public void UpdateMoney(int amount)
     {
@@ -115,11 +103,6 @@ public class PlayerStats : MonoBehaviour
 
     public int GetMoney() => playerStatsSO.money;
     public PlayerStatsSO GetPlayerStats() => playerStatsSO;
-
-    // ============================================================
-    // SAVE & LOAD
-    // ============================================================
-
     public void SaveGame()
     {
         Debug.Log("SAVING GAME: " + savePath);
@@ -163,7 +146,6 @@ public class PlayerStats : MonoBehaviour
 
         string json = JsonUtility.ToJson(data, true);
 
-        // File save (desktop + WebGL when allowed)
         try
         {
             File.WriteAllText(savePath, json);
@@ -173,7 +155,6 @@ public class PlayerStats : MonoBehaviour
             Debug.LogWarning("File save failed: " + e.Message);
         }
 
-        // PlayerPrefs mirror (GUARANTEED on itch.io)
         PlayerPrefs.SetString(PLAYER_PREFS_SAVE_KEY, json);
         PlayerPrefs.Save();
     }
@@ -182,7 +163,6 @@ public class PlayerStats : MonoBehaviour
     {
         string json = null;
 
-        // 1️⃣ Try file system
         try
         {
             if (File.Exists(savePath))
@@ -190,7 +170,6 @@ public class PlayerStats : MonoBehaviour
         }
         catch { }
 
-        // 2️⃣ Fallback to PlayerPrefs
         if (string.IsNullOrEmpty(json) && PlayerPrefs.HasKey(PLAYER_PREFS_SAVE_KEY))
         {
             json = PlayerPrefs.GetString(PLAYER_PREFS_SAVE_KEY);
@@ -214,10 +193,6 @@ public class PlayerStats : MonoBehaviour
         selectedLingIndex = cachedData.selectedLingIndex;
     }
 
-    // ============================================================
-    // SAFETY NETS
-    // ============================================================
-
     private void OnApplicationPause(bool pause)
     {
         if (pause)
@@ -229,14 +204,9 @@ public class PlayerStats : MonoBehaviour
         SaveGame();
     }
 
-    // ============================================================
-    // DEBUG
-    // ============================================================
-
     [ContextMenu("Delete Save File")]
     public void DeleteSaveFile()
     {
-        // Reset runtime values
         playerStatsSO.activeDamage = 20;
         playerStatsSO.autoDamagePerSecond = 10;
         playerStatsSO.money = 0;
@@ -256,8 +226,6 @@ public class PlayerStats : MonoBehaviour
             Debug.Log("No file found at: " + path);
         }
 
-
-        // Delete ALL PlayerPrefs (important for editor testing)
         PlayerPrefs.DeleteKey(PLAYER_PREFS_SAVE_KEY);
         PlayerPrefs.Save();
 

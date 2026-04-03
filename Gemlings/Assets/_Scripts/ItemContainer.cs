@@ -30,7 +30,6 @@ public class ItemContainer : MonoBehaviour
         itemWeightText.text = gem.weight.ToString("0.00") + " kg";
         itemValueText.text = "$ " + gem.trueValue.ToString();
         itemSpriteImage.sprite = gem.icon;
-        //itemSpriteImage.SetNativeSize();
         SetRarityColour();
     }
 
